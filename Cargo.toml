@@ -1,0 +1,17 @@
+[package]
+name = "verify"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0"
+windows-future = "0.3"
+
+[dependencies.windows]
+version = "0.62"
+features = [
+  "Security_Credentials_UI",
+  "Win32_System_WinRT",
+  "Win32_UI_WindowsAndMessaging",
+  "Win32_Graphics_Gdi",
+]
