@@ -3,7 +3,6 @@
 use anyhow::{Result, ensure};
 use std::fmt::Display;
 use std::thread;
-use windows::Win32::UI::WindowsAndMessaging::{SW_SHOW, SendMessageW, WM_APP, WS_VISIBLE};
 use windows::{
     Security::Credentials::UI::{
         UserConsentVerificationResult, UserConsentVerifier, UserConsentVerifierAvailability,
@@ -14,8 +13,8 @@ use windows::{
         UI::WindowsAndMessaging::{
             CW_USEDEFAULT, CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW,
             IDI_APPLICATION, LoadCursorW, MB_ICONERROR, MSG, MessageBoxW, PostQuitMessage,
-            RegisterClassW, ShowWindow, TranslateMessage, WINDOW_EX_STYLE, WM_DESTROY, WNDCLASSW,
-            WS_CAPTION, WS_OVERLAPPED, WS_SYSMENU,
+            RegisterClassW, SW_SHOW, SendMessageW, ShowWindow, TranslateMessage, WINDOW_EX_STYLE,
+            WM_APP, WM_DESTROY, WNDCLASSW, WS_CAPTION, WS_OVERLAPPED, WS_SYSMENU, WS_VISIBLE,
         },
     },
     core::{HSTRING, PCWSTR, factory, w},
@@ -45,8 +44,8 @@ fn verify_impl(hwnd: HWND) -> Result<()> {
                 hwnd,
                 &"Please verify your identity".into(),
             )?
+            .join()?
     };
-    let result = result.join()?;
     ensure!(
         result == UserConsentVerificationResult::Verified,
         "failed to verify"
